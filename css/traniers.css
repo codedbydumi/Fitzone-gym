@@ -1,0 +1,159 @@
+:root {
+    --primary-color: #ff7200;
+    --secondary-color: #333;
+    --hover-color: #e56a00;
+    --text-color: #fff;
+    --background-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+}
+
+.main {
+    width: 100%;
+    height: auto; /* Change to auto for responsive height */
+    background: url("gym traniers back.jpg") center / cover no-repeat;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-color);
+    padding: 10px 20px;
+}
+
+.logo {
+    color: var(--primary-color);
+    font-size: 35px;
+}
+
+.menu ul {
+    list-style-type: none;
+    display: flex;
+}
+
+.menu ul li {
+    margin-left: 20px;
+}
+
+.menu ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.menu ul li a:hover {
+    color: var(--primary-color);
+}
+
+.search {
+    display: flex;
+}
+
+.srch {
+    width: 200px;
+    height: 40px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.btn {
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    padding: 0 15px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: var(--hover-color);
+}
+
+.content {
+    width: 90%;
+    margin: auto;
+    padding: 40px 0;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 0;
+    background: var(--background-color);
+}
+
+.hero h1 {
+    font-family: 'Times New Roman', serif;
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.class-list {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 20px 0; /* Add padding for spacing */
+}
+
+.class-card {
+    flex: 0 0 auto; /* Prevent cards from shrinking */
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px;
+    width: 280px; /* Fixed width for cards */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center; /* Center text in card */
+}
+
+.class-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+}
+
+.class-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Accessibility styles */
+.menu ul li a:focus,
+.btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .content {
+        width: 100%;
+        padding: 20px;
+    }
+    .class-card {
+        width: 90%;
+    }
+}

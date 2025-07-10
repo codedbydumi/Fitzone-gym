@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings Dashboard</title>
+    <link rel="stylesheet" href="css/setting.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <h2 class="logo">Admin Dashboard</h2>
+            <ul class="menu">
+                <li><a href="#user-activity">User Activity</a></li>
+                <li><a href="#financial-reports">Financial Reports</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h1>Settings</h1>
+            </header>
+
+            <section id="change-password" class="content-section">
+                <h2>Change Password</h2>
+                <form id="passwordForm">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" required>
+                    
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" required>
+
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" required>
+                    
+                    <button type="submit" class="submit-button">Change Password</button>
+                </form>
+            </section>
+
+            <section id="manage-admins" class="content-section">
+                <h2>Manage Admin Accounts</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Admin ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>admin1</td>
+                            <td>admin1@example.com</td>
+                            <td>
+                                <button class="edit-button">Edit</button>
+                                <button class="delete-button">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>admin2</td>
+                            <td>admin2@example.com</td>
+                            <td>
+                                <button class="edit-button">Edit</button>
+                                <button class="delete-button">Delete</button>
+                            </td>
+                        </tr>
+                        <!-- More admin accounts can be added here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

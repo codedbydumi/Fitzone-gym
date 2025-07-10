@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Fitness Management</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/xx.css">
+ </head>
+<body>
+  <header>
+    <div class="logo">FITNESS<span>MEMBER</span></div>
+    <nav>
+      <ul>
+        <li>
+          <a href="#" onclick="showNotifications()" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">2</span>
+          </a>
+        </li>
+        <li><a href="#" onclick="showSettings()" aria-label="Settings"><i class="fas fa-cog"></i></a></li>
+        <li class="user-profile" onclick="showUserMenu()">
+          <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="User">
+          <span>John Doe</span>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active" onclick="showDashboard()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#" onclick="showProfile()"><i class="fas fa-user"></i> My Profile</a></li>
+        <li><a href="#" onclick="showClasses()"><i class="fas fa-dumbbell"></i> Classes</a></li>
+        <li><a href="#" onclick="showSchedule()"><i class="fas fa-calendar-alt"></i> My Schedule</a></li>
+        <li><a href="#" onclick="showProgress()"><i class="fas fa-chart-line"></i> Progress</a></li>
+        <li><a href="#" onclick="showMembership()"><i class="fas fa-credit-card"></i> Membership</a></li>
+        <li><a href="#" onclick="showSupport()"><i class="fas fa-question-circle"></i> Support</a></li>
+        <li><a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="index.php" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Back</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="dashboard-header">
+        <h1 class="dashboard-title">Member Dashboard</h1>
+        <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+          <i class="fas fa-moon"></i>
+          <span>Dark Mode</span>
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="stats-grid">
+        <div class="stats-card">
+          <div class="stats-number" id="classesBooked">8</div>
+          <div class="stats-label">Classes Booked</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="classesCompleted">15</div>
+          <div class="stats-label">Classes Completed</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="workoutHours">42</div>
+          <div class="stats-label">Hours Worked Out</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="membershipDays">156</div>
+          <div class="stats-label">Days as Member</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <!-- My Classes Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Classes</h3>
+            <i class="fas fa-dumbbell card-icon"></i>
+          </div>
+          <p>View and manage your class bookings.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showClasses()">
+              <i class="fas fa-dumbbell"></i> View Classes
+            </a>
+          </div>
+        </div>
+
+        <!-- Schedule Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Schedule</h3>
+            <i class="fas fa-calendar-alt card-icon"></i>
+          </div>
+          <p>Check your upcoming fitness sessions.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showSchedule()">
+              <i class="fas fa-calendar-alt"></i> View Schedule
+            </a>
+          </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Progress</h3>
+            <i class="fas fa-chart-line card-icon"></i>
+          </div>
+          <p>Track your fitness journey and achievements.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showProgress()">
+              <i class="fas fa-chart-line"></i> View Progress
+            </a>
+          </div>
+        </div>
+
+        <!-- Membership Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Membership</h3>
+            <i class="fas fa-credit-card card-icon"></i>
+          </div>
+          <p>Manage your membership plan and payments.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showMembership()">
+              <i class="fas fa-credit-card"></i> View Membership
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Classes -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Upcoming Classes</h3>
+          <i class="fas fa-calendar-alt card-icon"></i>
+        </div>
+        <table class="table" id="upcomingClassesTable">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Trainer</th>
+              <th>Date & Time</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="upcomingClassesBody">
+            <tr>
+              <td>Yoga Basics</td>
+              <td>Sarah Connor</td>
+              <td>Tomorrow, 10:00 AM</td>
+              <td>Studio A</td>
+              <td><span class="status-badge status-booked">Booked</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewClassDetails(0)">
+                  <i class="fas fa-eye"></i> Details
+                </button>
+                <button class="btn btn-danger" onclick="cancelClass(0)">
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>HIIT Workout</td>
+              <td>Mark Wilson</td>
+              <td>Wed, 6:00 PM</td>
+              <td>Main Hall</td>
+              <td><span class="status-badge status-booked">Booked</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewClassDetails(1)">
+                  <i class="fas fa-eye"></i> Details
+                </button>
+                <button class="btn btn-danger" onclick="cancelClass(1)">
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Available Classes -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Available Classes</h3>
+          <i class="fas fa-plus-circle card-icon"></i>
+        </div>
+        <table class="table" id="availableClassesTable">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Trainer</th>
+              <th>Schedule</th>
+              <th>Duration</th>
+              <th>Spots Available</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="availableClassesBody">
+            <tr>
+              <td>Pilates</td>
+              <td>Emma Stone</td>
+              <td>Mon, Wed, Fri - 9:00 AM</td>
+              <td>60 mins</td>
+              <td>5/15</td>
+              <td>
+                <button class="btn btn-primary" onclick="bookClass(0)">
+                  <i class="fas fa-plus"></i> Book Now
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>CrossFit</td>
+              <td>Mike Johnson</td>
+              <td>Tue, Thu - 7:00 AM</td>
+              <td>45 mins</td>
+              <td>3/10</td>
+              <td>
+                <button class="btn btn-primary" onclick="bookClass(1)">
+                  <i class="fas fa-plus"></i> Book Now
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Spin Class</td>
+              <td>Lisa Ray</td>
+              <td>Sat - 8:00 AM</td>
+              <td>50 mins</td>
+              <td>7/12</td>
+              <td>
+                <button class="btn btn-primary" onclick="bookClass(2)">
+                  <i class="fas fa-plus"></i> Book Now
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Fitness Progress</h3>
+          <i class="fas fa-chart-line card-icon"></i>
+        </div>
+        
+        <div class="progress-card">
+          <div class="progress-header">
+            <span>Monthly Goal</span>
+            <span>16/20 classes</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 80%"></div>
+          </div>
+          <div class="progress-text">80% complete - 4 classes remaining</div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-header">
+            <span>Workout Hours</span>
+            <span>42/50 hours</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 84%"></div>
+          </div>
+          <div class="progress-text">84% complete - 8 hours remaining</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Class Details Modal -->
+  <div id="classDetailsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Class Details</h2>
+        <button class="close" onclick="closeModal('classDetailsModal')">&times;</button>
+      </div>
+      <div id="classDetailsContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Class Modal -->
+  <div id="bookClassModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Book Class</h2>
+        <button class="close" onclick="closeModal('bookClassModal')">&times;</button>
+      </div>
+      <div id="bookClassContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data storage
+    let upcomingClasses = [
+      { name: 'Yoga Basics', trainer: 'Sarah Connor', datetime: 'Tomorrow, 10:00 AM', location: 'Studio A', status: 'Booked' },
+      { name: 'HIIT Workout', trainer: 'Mark Wilson', datetime: 'Wed, 6:00 PM', location: 'Main Hall', status: 'Booked' }
+    ];
+
+    let availableClasses = [
+      { name: 'Pilates', trainer: 'Emma Stone', schedule: 'Mon, Wed, Fri - 9:00 AM', duration: '60 mins', spots: '5/15' },
+      { name: 'CrossFit', trainer: 'Mike Johnson', schedule: 'Tue, Thu - 7:00 AM', duration: '45 mins', spots: '3/10' },
+      { name: 'Spin Class', trainer: 'Lisa Ray', schedule: 'Sat - 8:00 AM', duration: '50 mins', spots: '7/12' }
+    ];
+
+    let currentBookingIndex = -1;
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      const body = document.body;
+      const currentTheme = body.getAttribute('data-theme');
+      
+      if (currentTheme === 'dark') {
+        body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Check for saved theme preference
+    function checkTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // Navigation functions
+    function showDashboard() {
+      updateActiveMenuItem('Dashboard');
+      document.querySelector('.dashboard-title').textContent = 'Member Dashboard';
+    }
+
+    function showProfile() {
+      updateActiveMenuItem('My Profile');
+      document.querySelector('.dashboard-title').textContent = 'My Profile';
+      alert('Profile section - Feature coming soon!');
+    }
+
+    function showClasses() {
+      updateActiveMenuItem('Classes');
+      document.querySelector('.dashboard-title').textContent = 'My Classes';
+      document.getElementById('upcomingClassesTable').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showSchedule() {
+      updateActiveMenuItem('My Schedule');
+      document.querySelector('.dashboard-title').textContent = 'My Schedule';
+      alert('Schedule section - Feature coming soon!');
+    }
+
+    function showProgress() {
+      updateActiveMenuItem('Progress');
+      document.querySelector('.dashboard-title').textContent = 'My Progress';
+      alert('Progress section - Feature coming soon!');
+    }
+
+    function showMembership() {
+      updateActiveMenuItem('Membership');
+      document.querySelector('.dashboard-title').textContent = 'My Membership';
+      alert('Membership section - Feature coming soon!');
+    }
+
+    function showSupport() {
+      updateActiveMenuItem('Support');
+      document.querySelector('.dashboard-title').textContent = 'Support';
+      alert('Support section - Feature coming soon!');
+    }
+
+    function showSettings() {
+      updateActiveMenuItem('Settings');
+      document.querySelector('.dashboard-title').textContent = 'Settings';
+      alert('Settings section - Feature coming soon!');
+    }
+
+    function showNotifications() {
+      alert('Notifications:\n1. New class available\n2. Membership renewal reminder');
+    }
+
+    function showUserMenu() {
+      const userMenu = confirm('User Menu:\n- View Profile\n- Account Settings\n- Logout\n\nClick OK to view profile, Cancel to dismiss');
+      if (userMenu) {
+        showProfile();
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        alert('Logging out... Redirecting to login page.');
+        // In a real app, this would redirect to login page
+      }
+    }
+
+    function updateActiveMenuItem(itemName) {
+      // Remove active class from all menu items
+      document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to clicked item
+      document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        if (link.textContent.trim().includes(itemName)) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Class management functions
+    function viewClassDetails(index) {
+      if (index < 0 || index >= upcomingClasses.length) return;
+      
+      const classInfo = upcomingClasses[index];
+      const content = `
+        <div class="form-group">
+          <label><strong>Class Name:</strong></label>
+          <p>${classInfo.name}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Trainer:</strong></label>
+          <p>${classInfo.trainer}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Date & Time:</strong></label>
+          <p>${classInfo.datetime}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Location:</strong></label>
+          <p>${classInfo.location}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Status:</strong></label>
+          <p><span class="status-badge status-${classInfo.status.toLowerCase()}">${classInfo.status}</span></p>
+        </div>
+        <div class="form-group">
+          <label><strong>Description:</strong></label>
+          <p>Join us for an amazing ${classInfo.name} session with our certified trainer ${classInfo.trainer}. 
+          This class is designed to improve your flexibility, strength, and overall well-being.</p>
+        </div>
+        <div class="mt-3">
+          <button class="btn btn-primary" onclick="closeModal('classDetailsModal')">
+            <i class="fas fa-check"></i> Got it
+          </button>
+        </div>
+      `;
+      
+      document.getElementById('classDetailsContent').innerHTML = content;
+      document.getElementById('classDetailsModal').classList.add('active');
+    }
+
+    function cancelClass(index) {
+      if (index < 0 || index >= upcomingClasses.length) return;
+      
+      if (confirm(`Are you sure you want to cancel "${upcomingClasses[index].name}"?`)) {
+        upcomingClasses.splice(index, 1);
+        updateUpcomingClassesTable();
+        updateStats();
+        alert('Class cancelled successfully!');
+      }
+    }
+
+    function bookClass(index) {
+      if (index < 0 || index >= availableClasses.length) return;
+      
+      const spots = availableClasses[index].spots.split('/');
+      if (parseInt(spots[0]) <= 0) {
+        alert('No spots available for this class!');
+        return;
+      }
+      
+      currentBookingIndex = index;
+      const classInfo = availableClasses[index];
+      
+      const content = `
+        <div class="form-group">
+          <label><strong>Class:</strong></label>
+          <p>${classInfo.name}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Trainer:</strong></label>
+          <p>${classInfo.trainer}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Schedule:</strong></label>
+          <p>${classInfo.schedule}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Duration:</strong></label>
+          <p>${classInfo.duration}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Available Spots:</strong></label>
+          <p>${classInfo.spots}</p>
+        </div>
+        <p><strong>Are you sure you want to book this class?</strong></p>
+        <div class="mt-3">
+          <button class="btn btn-primary" onclick="confirmBooking()">
+            <i class="fas fa-check"></i> Confirm Booking
+          </button>
+          <button class="btn btn-secondary" onclick="closeModal('bookClassModal')">
+            Cancel
+          </button>
+        </div>
+      `;
+      
+      document.getElementById('bookClassContent').innerHTML = content;
+      document.getElementById('bookClassModal').classList.add('active');
+    }
+
+    function confirmBooking() {
+      if (currentBookingIndex >= 0) {
+        const classInfo = availableClasses[currentBookingIndex];
+        
+        // Add to upcoming classes
+        upcomingClasses.push({
+          name: classInfo.name,
+          trainer: classInfo.trainer,
+          datetime: 'Next week, TBD',
+          location: 'TBD',
+          status: 'Booked'
+        });
+        
+        // Update available spots
+        const spots = classInfo.spots.split('/');
+        const currentSpots = parseInt(spots[0]);
+        const totalSpots = parseInt(spots[1]);
+        availableClasses[currentBookingIndex].spots = `${currentSpots - 1}/${totalSpots}`;
+        
+        updateUpcomingClassesTable();
+        updateAvailableClassesTable();
+        updateStats();
+        
+        closeModal('bookClassModal');
+        alert(`Successfully booked "${classInfo.name}"!`);
+        currentBookingIndex = -1;
+      }
+    }
+
+    // Table update functions
+    function updateUpcomingClassesTable() {
+      const tbody = document.getElementById('upcomingClassesBody');
+      tbody.innerHTML = '';
+      
+      upcomingClasses.forEach((classInfo, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${classInfo.name}</td>
+          <td>${classInfo.trainer}</td>
+          <td>${classInfo.datetime}</td>
+          <td>${classInfo.location}</td>
+          <td><span class="status-badge status-${classInfo.status.toLowerCase()}">${classInfo.status}</span></td>
+          <td>
+            <button class="btn btn-secondary" onclick="viewClassDetails(${index})">
+              <i class="fas fa-eye"></i> Details
+            </button>
+            <button class="btn btn-danger" onclick="cancelClass(${index})">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateAvailableClassesTable() {
+      const tbody = document.getElementById('availableClassesBody');
+      tbody.innerHTML = '';
+      
+      availableClasses.forEach((classInfo, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${classInfo.name}</td>
+          <td>${classInfo.trainer}</td>
+          <td>${classInfo.schedule}</td>
+          <td>${classInfo.duration}</td>
+          <td>${classInfo.spots}</td>
+          <td>
+            <button class="btn btn-primary" onclick="bookClass(${index})">
+              <i class="fas fa-plus"></i> Book Now
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Stats update function
+    function updateStats() {
+      document.getElementById('classesBooked').textContent = upcomingClasses.length;
+      // Other stats would be updated based on actual data
+    }
+
+    // Modal functions
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('active');
+      }
+    }
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      checkTheme();
+      updateUpcomingClassesTable();
+      updateAvailableClassesTable();
+      
+      // Add some sample progress animation
+      setTimeout(() => {
+        document.querySelectorAll('.progress-fill').forEach(fill => {
+          fill.style.width = fill.style.width || '0%';
+        });
+      }, 500);
+    });
+
+    // Additional utility functions
+    function refreshDashboard() {
+      location.reload();
+    }
+
+    function exportData() {
+      const data = {
+        upcomingClasses: upcomingClasses,
+        availableClasses: availableClasses,
+        exportDate: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'fitness-dashboard-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 'd':
+            e.preventDefault();
+            showDashboard();
+            break;
+          case 'p':
+            e.preventDefault();
+            showProfile();
+            break;
+          case 'c':
+            e.preventDefault();
+            showClasses();
+            break;
+          case 's':
+            e.preventDefault();
+            showSchedule();
+            break;
+        }
+      }
+      
+      // Escape key to close modals
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(modal => {
+          modal.classList.remove('active');
+        });
+      }
+    });
+
+    // Auto-refresh stats every 30 seconds
+    setInterval(updateStats, 30000);
+  </script>
+</body>
+</html>

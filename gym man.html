@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard - Fitness Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/io.css">
+</head>
+<body>
+  <header>
+    <div class="logo">FITNESS<span>STAFF</span></div>
+    <nav>
+      <ul>
+        <li>
+          <a href="#" onclick="showNotifications()" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">5</span>
+          </a>
+        </li>
+        <li><a href="#" onclick="showSettings()" aria-label="Settings"><i class="fas fa-cog"></i></a></li>
+        <li class="user-profile" onclick="showUserMenu()">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Staff">
+          <span>Staff User</span>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active" onclick="showDashboard()"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#" onclick="showSchedule()"><i class="fas fa-calendar-alt"></i> My Schedule</a></li>
+        <li><a href="#" onclick="showMemberList()"><i class="fas fa-users"></i> Member List</a></li>
+        <li><a href="#" onclick="showAttendance()"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+        <li><a href="#" onclick="showQueries()"><i class="fas fa-comments"></i> Member Queries</a></li>
+        <li><a href="#" onclick="showShiftSchedule()"><i class="fas fa-user-clock"></i> Shift Schedule</a></li>
+        <li><a href="#" onclick="showPayments()"><i class="fas fa-credit-card"></i> Payments</a></li>
+        <li><a href="#" onclick="showEquipment()"><i class="fas fa-dumbbell"></i> Equipment</a></li>
+        <li><a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="index.php" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Back</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="dashboard-header">
+        <h1 class="dashboard-title">Staff Dashboard</h1>
+        <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+          <i class="fas fa-moon"></i>
+          <span>Dark Mode</span>
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="stats-grid">
+        <div class="stats-card">
+          <div class="stats-number" id="todayClasses">6</div>
+          <div class="stats-label">Today's Classes</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="totalMembers">156</div>
+          <div class="stats-label">Active Members</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="pendingQueries">8</div>
+          <div class="stats-label">Pending Queries</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number" id="attendanceRate">87%</div>
+          <div class="stats-label">Attendance Rate</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <!-- Today's Classes Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Today's Classes</h3>
+            <i class="fas fa-calendar-day card-icon"></i>
+          </div>
+          <p>View and manage your assigned classes for today.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showSchedule()">
+              <i class="fas fa-calendar-day"></i> View Schedule
+            </a>
+          </div>
+        </div>
+
+        <!-- Member List Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Member Management</h3>
+            <i class="fas fa-users card-icon"></i>
+          </div>
+          <p>Access member profiles and manage registrations.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showMemberList()">
+              <i class="fas fa-users"></i> View Members
+            </a>
+          </div>
+        </div>
+
+        <!-- Attendance Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Attendance Tracking</h3>
+            <i class="fas fa-clipboard-check card-icon"></i>
+          </div>
+          <p>Mark attendance for today's classes and track participation.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showAttendance()">
+              <i class="fas fa-clipboard-check"></i> Take Attendance
+            </a>
+          </div>
+        </div>
+
+        <!-- Queries Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Member Support</h3>
+            <i class="fas fa-comments card-icon"></i>
+          </div>
+          <p>Respond to member questions and provide assistance.</p>
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary" onclick="showQueries()">
+              <i class="fas fa-comments"></i> View Queries
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Schedule -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Today's Schedule</h3>
+          <i class="fas fa-calendar-day card-icon"></i>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search classes..." onkeyup="searchClasses(this.value)">
+          <button class="btn btn-primary" onclick="showAddClassModal()">
+            <i class="fas fa-plus"></i> Add Class
+          </button>
+        </div>
+        <table class="table" id="scheduleTable">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Time</th>
+              <th>Participants</th>
+              <th>Room</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody">
+            <tr>
+              <td>Morning Yoga</td>
+              <td>8:00 AM - 9:00 AM</td>
+              <td>12/15</td>
+              <td>Studio A</td>
+              <td><span class="status-badge status-completed">Completed</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="markAttendance(0)">
+                  <i class="fas fa-check"></i> Attendance
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Strength Training</td>
+              <td>10:00 AM - 11:00 AM</td>
+              <td>8/12</td>
+              <td>Gym Floor</td>
+              <td><span class="status-badge status-upcoming">Upcoming</span></td>
+              <td>
+                <button class="btn btn-warning" onclick="startClass(1)">
+                  <i class="fas fa-play"></i> Start
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>HIIT Training</td>
+              <td>5:00 PM - 6:00 PM</td>
+              <td>15/20</td>
+              <td>Studio B</td>
+              <td><span class="status-badge status-upcoming">Upcoming</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewDetails(2)">
+                  <i class="fas fa-info"></i> Details
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Zumba Class</td>
+              <td>7:00 PM - 8:00 PM</td>
+              <td>18/25</td>
+              <td>Studio A</td>
+              <td><span class="status-badge status-upcoming">Upcoming</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewDetails(3)">
+                  <i class="fas fa-info"></i> Details
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Member List -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Recent Member Activity</h3>
+          <i class="fas fa-users card-icon"></i>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search members..." onkeyup="searchMembers(this.value)">
+          <button class="btn btn-primary" onclick="showAddMemberModal()">
+            <i class="fas fa-plus"></i> Add Member
+          </button>
+        </div>
+        <table class="table" id="membersTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Membership</th>
+              <th>Last Visit</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <tr>
+              <td>John Doe</td>
+              <td>Premium Annual</td>
+              <td>Today, 8:15 AM</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewMember(0)">
+                  <i class="fas fa-user"></i> View
+                </button>
+                <button class="btn btn-primary" onclick="editMember(0)">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>Basic Monthly</td>
+              <td>Yesterday, 6:30 PM</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewMember(1)">
+                  <i class="fas fa-user"></i> View
+                </button>
+                <button class="btn btn-primary" onclick="editMember(1)">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Mike Johnson</td>
+              <td>Premium Monthly</td>
+              <td>2 days ago</td>
+              <td><span class="status-badge status-pending">Expiring Soon</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewMember(2)">
+                  <i class="fas fa-user"></i> View
+                </button>
+                <button class="btn btn-warning" onclick="renewMembership(2)">
+                  <i class="fas fa-refresh"></i> Renew
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Recent Queries -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h3 class="card-title">Recent Member Queries</h3>
+          <i class="fas fa-comments card-icon"></i>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search queries..." onkeyup="searchQueries(this.value)">
+          <button class="btn btn-primary" onclick="showAddQueryModal()">
+            <i class="fas fa-plus"></i> Add Query
+          </button>
+        </div>
+        <table class="table" id="queriesTable">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Subject</th>
+              <th>Date</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="queriesTableBody">
+            <tr>
+              <td>John Doe</td>
+              <td>Membership Extension</td>
+              <td>Today, 10:30 AM</td>
+              <td><span class="status-badge status-pending">High</span></td>
+              <td><span class="status-badge status-pending">Pending</span></td>
+              <td>
+                <button class="btn btn-primary" onclick="respondToQuery(0)">
+                  <i class="fas fa-reply"></i> Respond
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>Class Schedule Change</td>
+              <td>Yesterday, 4:15 PM</td>
+              <td><span class="status-badge status-upcoming">Medium</span></td>
+              <td><span class="status-badge status-resolved">Resolved</span></td>
+              <td>
+                <button class="btn btn-secondary" onclick="viewQuery(1)">
+                  <i class="fas fa-eye"></i> View
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Mike Johnson</td>
+              <td>Payment Issue</td>
+              <td>2 days ago</td>
+              <td><span class="status-badge status-pending">High</span></td>
+              <td><span class="status-badge status-pending">Pending</span></td>
+              <td>
+                <button class="btn btn-primary" onclick="respondToQuery(2)">
+                  <i class="fas fa-reply"></i> Respond
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Member Modal -->
+  <div id="memberModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="memberModalTitle">Add New Member</h2>
+        <button class="close" onclick="closeModal('memberModal')">&times;</button>
+      </div>
+      <form id="memberForm">
+        <div class="form-group">
+          <label for="memberName">Name:</label>
+          <input type="text" id="memberName" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="memberEmail">Email:</label>
+          <input type="email" id="memberEmail" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="memberPhone">Phone:</label>
+          <input type="tel" id="memberPhone" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="membershipType">Membership Type:</label>
+          <select id="membershipType" name="membership" required>
+            <option value="">Select Membership</option>
+            <option value="basic-monthly">Basic Monthly</option>
+            <option value="premium-monthly">Premium Monthly</option>
+            <option value="basic-annual">Basic Annual</option>
+            <option value="premium-annual">Premium Annual</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="joinDate">Join Date:</label>
+          <input type="date" id="joinDate" name="joinDate" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Member
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('memberModal')">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Class Modal -->
+  <div id="classModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New Class</h2>
+        <button class="close" onclick="closeModal('classModal')">&times;</button>
+      </div>
+      <form id="classForm">
+        <div class="form-group">
+          <label for="className">Class Name:</label>
+          <input type="text" id="className" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="classTime">Time:</label>
+          <input type="time" id="classTime" name="time" required>
+        </div>
+        <div class="form-group">
+          <label for="classDuration">Duration (minutes):</label>
+          <input type="number" id="classDuration" name="duration" min="15" max="180" required>
+        </div>
+        <div class="form-group">
+          <label for="classCapacity">Capacity:</label>
+          <input type="number" id="classCapacity" name="capacity" min="1" max="50" required>
+        </div>
+        <div class="form-group">
+          <label for="classRoom">Room:</label>
+          <select id="classRoom" name="room" required>
+            <option value="">Select Room</option>
+            <option value="studio-a">Studio A</option>
+            <option value="studio-b">Studio B</option>
+            <option value="gym-floor">Gym Floor</option>
+            <option value="yoga-room">Yoga Room</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="classDescription">Description:</label>
+          <textarea id="classDescription" name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Class
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('classModal')">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Query Response Modal -->
+  <div id="queryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Respond to Query</h2>
+        <button class="close" onclick="closeModal('queryModal')">&times;</button>
+      </div>
+      <form id="queryForm">
+        <div class="form-group">
+          <label for="queryMember">Member:</label>
+          <input type="text" id="queryMember" name="member" readonly>
+        </div>
+        <div class="form-group">
+          <label for="querySubject">Subject:</label>
+          <input type="text" id="querySubject" name="subject" readonly>
+        </div>
+        <div class="form-group">
+          <label for="queryMessage">Original Message:</label>
+          <textarea id="queryMessage" name="message" rows="3" readonly></textarea>
+        </div>
+        <div class="form-group">
+          <label for="queryResponse">Your Response:</label>
+          <textarea id="queryResponse" name="response" rows="4" required placeholder="Type your response here..."></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-send"></i> Send Response
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('queryModal')">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Attendance Modal -->
+  <div id="attendanceModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Mark Attendance</h2>
+        <button class="close" onclick="closeModal('attendanceModal')">&times;</button>
+      </div>
+      <div class="form-group">
+        <label for="attendanceClass">Class:</label>
+        <input type="text" id="attendanceClass" readonly>
+      </div>
+      <div class="form-group">
+        <label>Participants:</label>
+        <div id="attendanceList">
+          <!-- Dynamic attendance list will be populated here -->
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="saveAttendance()">
+          <i class="fas fa-save"></i> Save Attendance
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('attendanceModal')">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data
+    let members = [
+      { id: 1, name: "John Doe", email: "john@example.com", phone: "555-0101", membership: "Premium Annual", joinDate: "2024-01-15", status: "Active", lastVisit: "Today, 8:15 AM" },
+      { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-0102", membership: "Basic Monthly", joinDate: "2024-02-20", status: "Active", lastVisit: "Yesterday, 6:30 PM" },
+      { id: 3, name: "Mike Johnson", email: "mike@example.com", phone: "555-0103", membership: "Premium Monthly", joinDate: "2024-01-10", status: "Expiring Soon", lastVisit: "2 days ago" }
+    ];
+
+    let classes = [
+      { id: 1, name: "Morning Yoga", time: "8:00 AM - 9:00 AM", participants: "12/15", room: "Studio A", status: "Completed" },
+      { id: 2, name: "Strength Training", time: "10:00 AM - 11:00 AM", participants: "8/12", room: "Gym Floor", status: "Upcoming" },
+      { id: 3, name: "HIIT Training", time: "5:00 PM - 6:00 PM", participants: "15/20", room: "Studio B", status: "Upcoming" },
+      { id: 4, name: "Zumba Class", time: "7:00 PM - 8:00 PM", participants: "18/25", room: "Studio A", status: "Upcoming" }
+    ];
+
+    let queries = [
+      { id: 1, member: "John Doe", subject: "Membership Extension", date: "Today, 10:30 AM", priority: "High", status: "Pending", message: "I would like to extend my membership for another year." },
+      { id: 2, member: "Jane Smith", subject: "Class Schedule Change", date: "Yesterday, 4:15 PM", priority: "Medium", status: "Resolved", message: "Can I change my yoga class to a different time slot?" },
+      { id: 3, member: "Mike Johnson", subject: "Payment Issue", date: "2 days ago", priority: "High", status: "Pending", message: "My payment was declined but I'm sure my card is valid." }
+    ];
+
+    // Dark mode functionality
+    function toggleDarkMode() {
+      const body = document.body;
+      const currentTheme = body.getAttribute('data-theme');
+      
+      if (currentTheme === 'dark') {
+        body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Check for saved theme preference
+    function checkTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // Navigation functions
+    function showDashboard() {
+      updateActiveMenuItem('Dashboard');
+      document.querySelector('.dashboard-title').textContent = 'Staff Dashboard';
+    }
+
+    function showSchedule() {
+      updateActiveMenuItem('My Schedule');
+      document.querySelector('.dashboard-title').textContent = 'My Schedule';
+    }
+
+    function showMemberList() {
+      updateActiveMenuItem('Member List');
+      document.querySelector('.dashboard-title').textContent = 'Member List';
+    }
+
+    function showAttendance() {
+      updateActiveMenuItem('Attendance');
+      document.querySelector('.dashboard-title').textContent = 'Attendance';
+    }
+
+    function showQueries() {
+      updateActiveMenuItem('Member Queries');
+      document.querySelector('.dashboard-title').textContent = 'Member Queries';
+    }
+
+    function showShiftSchedule() {
+      updateActiveMenuItem('Shift Schedule');
+      document.querySelector('.dashboard-title').textContent = 'Shift Schedule';
+    }
+
+    function showPayments() {
+      updateActiveMenuItem('Payments');
+      document.querySelector('.dashboard-title').textContent = 'Payments';
+    }
+
+    function showEquipment() {
+      updateActiveMenuItem('Equipment');
+      document.querySelector('.dashboard-title').textContent = 'Equipment';
+    }
+
+    function showSettings() {
+      updateActiveMenuItem('Settings');
+      document.querySelector('.dashboard-title').textContent = 'Settings';
+    }
+
+    function updateActiveMenuItem(itemName) {
+      // Remove active class from all menu items
+      document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to clicked item
+      document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        if (link.textContent.trim().includes(itemName)) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    function showNotifications() {
+      alert('Notifications:\n1. New member registration\n2. Class schedule update\n3. Payment reminder\n4. Equipment maintenance\n5. Staff meeting tomorrow');
+    }
+
+    function showUserMenu() {
+      const choice = confirm('User Menu:\n- Profile Settings\n- Change Password\n- Logout\n\nClick OK for Profile, Cancel to dismiss');
+      if (choice) {
+        showSettings();
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        alert('Logging out... Redirecting to login page.');
+        // In a real app, this would redirect to login page
+      }
+    }
+
+    // Modal functions
+    function showModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    function showAddMemberModal() {
+      document.getElementById('memberModalTitle').textContent = 'Add New Member';
+      document.getElementById('memberForm').reset();
+      showModal('memberModal');
+    }
+
+    function showAddClassModal() {
+      document.getElementById('classForm').reset();
+      showModal('classModal');
+    }
+
+    function showAddQueryModal() {
+      document.getElementById('queryForm').reset();
+      showModal('queryModal');
+    }
+
+    // Member functions
+    function viewMember(index) {
+      if (index < 0 || index >= members.length) return;
+      
+      const member = members[index];
+      const content = `
+        <div class="form-group">
+          <label><strong>Name:</strong></label>
+          <p>${member.name}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Email:</strong></label>
+          <p>${member.email}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Phone:</strong></label>
+          <p>${member.phone}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Membership:</strong></label>
+          <p>${member.membership}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Join Date:</strong></label>
+          <p>${member.joinDate}</p>
+        </div>
+        <div class="form-group">
+          <label><strong>Status:</strong></label>
+          <p><span class="status-badge status-${member.status.toLowerCase().includes('active') ? 'active' : 'pending'}">${member.status}</span></p>
+        </div>
+        <div class="form-group">
+          <label><strong>Last Visit:</strong></label>
+          <p>${member.lastVisit}</p>
+        </div>
+      `;
+      
+      alert(`Member Details:\nName: ${member.name}\nEmail: ${member.email}\nPhone: ${member.phone}\nMembership: ${member.membership}\nJoin Date: ${member.joinDate}\nStatus: ${member.status}\nLast Visit: ${member.lastVisit}`);
+    }
+
+    function editMember(index) {
+      if (index < 0 || index >= members.length) return;
+      
+      const member = members[index];
+      document.getElementById('memberModalTitle').textContent = 'Edit Member';
+      document.getElementById('memberName').value = member.name;
+      document.getElementById('memberEmail').value = member.email;
+      document.getElementById('memberPhone').value = member.phone;
+      document.getElementById('membershipType').value = member.membership.toLowerCase().replace(' ', '-');
+      document.getElementById('joinDate').value = member.joinDate;
+      showModal('memberModal');
+    }
+
+    function renewMembership(index) {
+      if (index < 0 || index >= members.length) return;
+      
+      const member = members[index];
+      if (confirm(`Renew membership for ${member.name}?`)) {
+        member.status = 'Active';
+        member.membership = member.membership.includes('Monthly') ? 
+          member.membership.replace('Monthly', 'Annual') : 
+          member.membership;
+        
+        alert('Membership renewed successfully!');
+        // In a real app, we would update the table display here
+      }
+    }
+
+    // Class functions
+    function startClass(index) {
+      if (index < 0 || index >= classes.length) return;
+      
+      const classItem = classes[index];
+      if (confirm(`Start class: ${classItem.name}?`)) {
+        classItem.status = 'Active';
+        alert('Class started successfully!');
+      }
+    }
+
+    function viewDetails(index) {
+      if (index < 0 || index >= classes.length) return;
+      
+      const classItem = classes[index];
+      alert(`Class Details:\nName: ${classItem.name}\nTime: ${classItem.time}\nParticipants: ${classItem.participants}\nRoom: ${classItem.room}\nStatus: ${classItem.status}`);
+    }
+
+    function markAttendance(index) {
+      if (index < 0 || index >= classes.length) return;
+      
+      const classItem = classes[index];
+      document.getElementById('attendanceClass').value = classItem.name;
+      
+      // Generate sample participant list
+      const participants = [
+        'John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'Tom Brown',
+        'Lisa Davis', 'Chris Miller', 'Emma Taylor', 'David Anderson', 'Amy Garcia'
+      ];
+      
+      const attendanceList = document.getElementById('attendanceList');
+      attendanceList.innerHTML = '';
+      
+      participants.forEach((participant, i) => {
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.marginBottom = '0.5rem';
+        
+        div.innerHTML = `
+          <input type="checkbox" id="participant-${i}" checked style="margin-right: 0.5rem;">
+          <label for="participant-${i}">${participant}</label>
+        `;
+        
+        attendanceList.appendChild(div);
+      });
+      
+      showModal('attendanceModal');
+    }
+
+    function saveAttendance() {
+      alert('Attendance saved successfully!');
+      closeModal('attendanceModal');
+    }
+
+    // Query functions
+    function respondToQuery(index) {
+      if (index < 0 || index >= queries.length) return;
+      
+      const query = queries[index];
+      document.getElementById('queryMember').value = query.member;
+      document.getElementById('querySubject').value = query.subject;
+      document.getElementById('queryMessage').value = query.message;
+      document.getElementById('queryResponse').value = '';
+      showModal('queryModal');
+    }
+
+    function viewQuery(index) {
+      if (index < 0 || index >= queries.length) return;
+      
+      const query = queries[index];
+      alert(`Query Details:\nMember: ${query.member}\nSubject: ${query.subject}\nDate: ${query.date}\nPriority: ${query.priority}\nStatus: ${query.status}\nMessage: ${query.message}`);
+    }
+
+    // Search functions
+    function searchMembers(searchTerm) {
+      const tbody = document.getElementById('membersTableBody');
+      const rows = tbody.querySelectorAll('tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
+      });
+    }
+
+    function searchClasses(searchTerm) {
+      const tbody = document.getElementById('scheduleTableBody');
+      const rows = tbody.querySelectorAll('tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
+      });
+    }
+
+    function searchQueries(searchTerm) {
+      const tbody = document.getElementById('queriesTableBody');
+      const rows = tbody.querySelectorAll('tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
+      });
+    }
+
+    // Form submission handlers
+    document.getElementById('memberForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const newMember = {
+        id: members.length + 1,
+        name: document.getElementById('memberName').value,
+        email: document.getElementById('memberEmail').value,
+        phone: document.getElementById('memberPhone').value,
+        membership: document.getElementById('membershipType').value
+          .split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
+        joinDate: document.getElementById('joinDate').value,
+        status: "Active",
+        lastVisit: "Never"
+      };
+      
+      members.push(newMember);
+      alert('Member saved successfully!');
+      closeModal('memberModal');
+    });
+
+    document.getElementById('classForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const newClass = {
+        id: classes.length + 1,
+        name: document.getElementById('className').value,
+        time: document.getElementById('classTime').value,
+        duration: document.getElementById('classDuration').value,
+        capacity: document.getElementById('classCapacity').value,
+        room: document.getElementById('classRoom').value
+          .split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
+        participants: "0/" + document.getElementById('classCapacity').value,
+        status: "Upcoming"
+      };
+      
+      classes.push(newClass);
+      alert('Class added successfully!');
+      closeModal('classModal');
+    });
+
+    document.getElementById('queryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const response = document.getElementById('queryResponse').value;
+      alert('Response sent successfully!\n\nYour response: ' + response);
+      closeModal('queryModal');
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('active');
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(modal => {
+          modal.classList.remove('active');
+        });
+      }
+    });
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      checkTheme();
+      showDashboard();
+    });
+  </script>
+</body>
+</html>

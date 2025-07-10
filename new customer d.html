@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Customer Dashboard</title>
+    <link rel="stylesheet" href="new customer d.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <h2 class="logo">New Customer Dashboard</h2>
+            <ul class="menu">
+                <li><a href="#payment">Payment Method</a></li>
+                <li><a href="#diet">Select Diet</a></li>
+                <li><a href="#schedule">Select Schedule</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#help">Help</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section id="payment" class="payment-section">
+                <h2>Payment Method</h2>
+                <form>
+                    <label for="payment-method">Choose a payment method:</label>
+                    <select id="payment-method" name="payment-method">
+                        <option value="credit-card">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank-transfer">Bank Transfer</option>
+                    </select>
+                    <button type="submit">Save Payment Method</button>
+                </form>
+            </section>
+
+            <section id="diet" class="diet-section">
+                <h2>Select Diet</h2>
+                <form>
+                    <label for="diet-plan">Choose a diet plan:</label>
+                    <select id="diet-plan" name="diet-plan">
+                        <option value="weight-loss">Weight Loss</option>
+                        <option value="muscle-gain">Muscle Gain</option>
+                        <option value="balanced-diet">Balanced Diet</option>
+                    </select>
+                    <button type="submit">Save Diet Plan</button>
+                </form>
+            </section>
+
+            <section id="schedule" class="schedule-section">
+                <h2>Select Schedule</h2>
+                <form>
+                    <label for="schedule-plan">Choose a schedule:</label>
+                    <select id="schedule-plan" name="schedule-plan">
+                        <option value="monday-friday">Monday - Friday</option>
+                        <option value="weekends">Weekends Only</option>
+                        <option value="custom">Custom Schedule</option>
+                    </select>
+                    <button type="submit">Save Schedule</button>
+                </form>
+            </section>
+
+            <section id="settings" class="settings-section">
+                <h2>Settings</h2>
+                <p>Manage your account settings here.</p>
+                <button>Change Password</button>
+                <button>Update Email</button>
+            </section>
+
+            <section id="help" class="help-section">
+                <h2>Help & Support</h2>
+                <p>If you need assistance, please contact our support team.</p>
+                <button>Contact Support</button>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

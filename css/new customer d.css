@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Light background */
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: #333; /* Dark sidebar */
+    color: #fff;
+    width: 250px; /* Width of the sidebar */
+    padding: 20px;
+}
+
+.logo {
+    font-size: 24px; /* Logo font size */
+    margin-bottom: 20px; /* Space below logo */
+}
+
+.menu {
+    list-style: none; /* Remove bullet points */
+}
+
+.menu li {
+    margin: 15px 0; /* Space between menu items */
+}
+
+.menu li a {
+    color: #fff;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease;
+}
+
+.menu li a:hover {
+    color: #ff7200; /* Change color on hover */
+}
+
+.main-content {
+    flex-grow: 1; /* Take the remaining space */
+    padding: 20px; /* Space inside the main content */
+    background-color: #fff; /* White background for content */
+}
+
+section {
+    margin-bottom: 40px; /* Space between sections */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+h2 {
+    margin-bottom: 15px; /* Space below headings */
+}
+
+button {
+    background-color: #ff7200; /* Button background */
+    color: #fff; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Space inside button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ffb100; /* Change color on hover */
+}
+
+/* Styling for forms */
+form {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+}
+
+label {
+    margin-bottom: 10px; /* Space below labels */
+}
+
+select {
+    padding: 10px; /* Space inside dropdown */
+    margin-bottom: 15px; /* Space below dropdowns */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border for dropdown */
+}

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone Blog - Professional Fitness Insights</title>
+    <link rel="stylesheet" href="css/blog.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background-color: #000000;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #000000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #000000;
+            box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+            border-bottom: 1px solid #333;
+        }
+
+        .navbar .icon .logo {
+            color: #ff6b35;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .navbar .menu ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .navbar .menu ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .menu ul li a:hover {
+            background: #ff6b35;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+
+        .navbar .search {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .navbar .search .srch {
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+            background: #111;
+            color: #ffffff;
+        }
+
+        .navbar .search .srch::placeholder {
+            color: #888;
+        }
+
+        .navbar .search .btn {
+            padding: 0.5rem 1.5rem;
+            background: #ff6b35;
+            color: #000000;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .search .btn:hover {
+            background: #e55a2b;
+            transform: translateY(-1px);
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            padding: 3rem 2rem;
+            background: #000000;
+        }
+
+        .blog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .blog-post {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #ff6b35;
+            border: 1px solid #333;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+            border-color: #ff6b35;
+        }
+
+        .blog-post h2 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .blog-post p {
+            color: #cccccc;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .blog-post ul {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .blog-post ul li {
+            color: #bbbbbb;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #ff6b35;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .read-more:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+        }
+
+        .sidebar {
+            background: #111111;
+            padding: 2rem;
+            border-radius: 12px;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            border: 1px solid #333;
+        }
+
+        .sidebar h3 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 0.5rem;
+        }
+
+        .categories, .recent-posts {
+            list-style: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .categories li, .recent-posts li {
+            margin-bottom: 1rem;
+        }
+
+        .categories a, .recent-posts a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #222222;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+
+        .categories a:hover, .recent-posts a:hover {
+            background: #ff6b35;
+            color: #000000;
+            transform: translateX(5px);
+        }
+
+        .category-image, .recent-post-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .video-container {
+            background: #222222;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .navbar .menu ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+
+            .blog-post {
+                padding: 1.5rem;
+            }
+
+            .blog-post h2 {
+                font-size: 1.5rem;
+            }
+
+            .sidebar {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <nav class="navbar">
+            <div class="icon">
+                <h2 class="logo">FitZone</h2>
+            </div>
+            <div class="menu">
+              <ul>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="my.php">CLASSES</a></li>
+                    <li><a href="trainers.php">TRAINERS</a></li>
+                    <li><a href="membership.html">MEMBERSHIP</a></li>
+                    <li><a href="blog.html">BLOG</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                </ul>
+            </div>
+    
+        </nav>
+
+        <main>
+            <div class="blog-container">
+                <article class="blog-post">
+                    <h2>5 Benefits of Yoga for Your Health</h2>
+                    <img src="images/yoga blog.jpg" alt="Yoga Benefits" class="blog-image">
+                    <p>Yoga is not just a workout; it's a way to transform your mind and body. Here are five key benefits:</p>
+                    <ul>
+                        <li>Improves flexibility</li>
+                        <li>Enhances mental clarity</li>
+                        <li>Boosts immune system</li>
+                        <li>Reduces stress and anxiety</li>
+                        <li>Increases strength and balance</li>
+                    </ul>
+                    <p>Join our yoga classes at FitZone to experience these benefits firsthand!</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="blog-post">
+                    <h2>Healthy Meal Prep Ideas for the Week</h2>
+                    <img src="images/health blog.jpg" alt="Meal Prep" class="blog-image">
+                    <p>Planning your meals in advance can save time and help you stick to your fitness goals. Here are some ideas:</p>
+                    <ul>
+                        <li>Quinoa salad with veggies</li>
+                        <li>Grilled chicken and brown rice</li>
+                        <li>Vegetable stir-fry with tofu</li>
+                    </ul>
+                    <p>For more recipes, check out our blog!</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="blog-post">
+                    <h2>Getting Started with Strength Training</h2>
+                    <img src="images/strength tra b.jpg" alt="Strength Training" class="blog-image">
+                    <p>Strength training is crucial for overall fitness. Here's how to get started:</p>
+                    <ul>
+                        <li>Start with basic exercises like squats and push-ups.</li>
+                        <li>Focus on form to prevent injuries.</li>
+                        <li>Gradually increase weights as you gain strength.</li>
+                    </ul>
+                    <p>Join our strength training classes for expert guidance!</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+            </div>
+
+            <aside class="sidebar">
+                <h3>Categories</h3>
+                <ul class="categories">
+                    <li>
+                        <a href="Nutrition.html">
+                            <img src="images/nublog.jpg" alt="Nutrition" class="category-image">
+                            Nutrition
+                        </a>
+                    </li>
+                    <li>
+                        <a href="workout.html">
+                            <img src="images/tip.jpg" alt="Workout Tips" class="category-image">
+                            Workout Tips
+                        </a>
+                    </li>
+                    <li>
+                        <a href="success stories.html">
+                            <img src="images/succes.jpeg" alt="Success Stories" class="category-image">
+                            Success Stories
+                        </a>
+                    </li>
+                </ul>
+
+                <h3>Recent Posts</h3>
+                <ul class="recent-posts">
+                    <li>
+                        <a href="motivate.html">
+                            <img src="images/yoga.jpg" alt="Yoga Benefits" class="recent-post-image">
+                            How to Stay Motivated in Your Fitness Journey
+                        </a>
+                    </li>
+                    <li>
+                        <a href="breakfast.html">
+                            <img src="images/healthy.jpg" alt="Healthy Breakfast Ideas" class="recent-post-image">
+                            5 Healthy Breakfast Ideas for Busy Mornings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Strength traning.html">
+                            <img src="images/strenth training.jpg" alt="Strength Training Tips" class="recent-post-image">
+                            Strength Training: Tips for Beginners
+                        </a>
+                    </li>
+                </ul>
+
+                <h3>Watch Our Latest Video</h3>
+                <div class="video-container">
+                    <video controls>
+                        <source src="videos/blog small.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </aside>
+        </main>
+    </div>
+</body>
+</html>
